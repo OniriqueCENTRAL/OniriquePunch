@@ -1,0 +1,7 @@
+Test project D:/a/OniriquePunch/OniriquePunch/build
+    Start 1: punch
+1/1 Test #1: punch ............................   Passed    0.14 sec
+
+100% tests passed out of 1
+
+Total Test time (real) =   0.17 sec
