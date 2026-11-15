@@ -11,7 +11,8 @@ namespace
     const Colour bone { 0xfff4ecec }, haze { 0xffa8939a }, mist { 0xffd9c6c9 }, ink { 0xff0b0708 };
 
     // Where things lie on the front, in points.
-    const Rectangle<float> kLeftCard { 16, 12, 844, 566 }, kSideCard { 876, 12, 208, 566 };
+    // The left side is drawn straight on the background; only the right panel is a card.
+    const Rectangle<float> kLeftCard { 0, 0, 866, 590 }, kSideCard { 876, 12, 208, 566 };
     constexpr float kModuleH = 38, kStripH = 66;
 
     Colour bandColour (int b) { return b == 0 ? look::ember : b == 1 ? look::emberPink : Colour (0xffffdadd); }
@@ -674,14 +675,7 @@ namespace
 
         void paint (Graphics& g) override
         {
-            const auto r = getLocalBounds().toFloat();
             const auto p = plot();
-
-            // the display: dark glass, rounded at the bottom like the card it sits in
-            Path inner;
-            inner.addRoundedRectangle (r.getX() + 1, r.getY(), r.getWidth() - 2, r.getHeight() - 1, 13.0f, 13.0f, false, false, true, true);
-            g.setGradientFill (ColourGradient (Colour (0xe00d0709), 0.0f, 0.0f, Colour (0xf0060404), 0.0f, r.getBottom(), false));
-            g.fillPath (inner);
 
             const auto mono = ed.fonts->monoFont (10.0f);
             for (float db : { 12.0f, 9.0f, 6.0f, 3.0f, 0.0f, -3.0f, -6.0f, -12.0f, -24.0f, -48.0f })
@@ -955,12 +949,11 @@ PunchEditor::PunchEditor (PunchProcessor& p)
 
     front.onPaint = [] (Graphics& g)
     {
-        da::glass (g, kLeftCard, 14.0f, 1.0f);
         da::glass (g, kSideCard, 14.0f, 1.0f);
 
         g.setColour (Colours::white.withAlpha (0.07f));
-        g.fillRect (kLeftCard.getX() + 1.0f, kLeftCard.getY() + kModuleH, kLeftCard.getWidth() - 2.0f, 1.0f);
-        g.fillRect (kLeftCard.getX() + 1.0f, kLeftCard.getY() + kModuleH + kStripH, kLeftCard.getWidth() - 2.0f, 1.0f);
+        g.fillRect (kLeftCard.getX(), kLeftCard.getY() + kModuleH, kLeftCard.getWidth(), 1.0f);
+        g.fillRect (kLeftCard.getX(), kLeftCard.getY() + kModuleH + kStripH, kLeftCard.getWidth(), 1.0f);
     };
 
     module = std::make_unique<ModuleRow> (*this);
