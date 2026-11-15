@@ -19,7 +19,10 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          # EN PAUSE (05/11/2026) : l'entrée macOS revient quand le Mac se recompile sur une vraie machine Mac
+          - name: macOS
+            os: macos-latest
+            generator: Xcode
+            artefacts: build/OniriquePunch_artefacts/Release
           - name: Windows
             os: windows-latest
             artefacts: build/OniriquePunch_artefacts/Release
